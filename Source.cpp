@@ -93,7 +93,7 @@ void Insert(Node*& pRoot, Node* pNewNode)
 	}
 }
 
-void printBranch(Node* pRoot, vector <int> branch, vector<vector<int>> &branches)
+void storeBranch(Node* pRoot, vector <int> branch, vector<vector<int>> &branches)
 {
 	if (pRoot == nullptr)
 		return false;
@@ -105,8 +105,8 @@ void printBranch(Node* pRoot, vector <int> branch, vector<vector<int>> &branches
 	}
 	else	// otherwise check subtrees 
 	{
-		printBranch(pRoot->pLeft, branch, branchLen);
-		printBranch(pRoot->pRight, branch, brannchLen);
+		storeBranch(pRoot->pLeft, branch, branchLen);
+		storeBranch(pRoot->pRight, branch, brannchLen);
 	}
 }
 int LargestBranchSum(Node* pRoot)
@@ -126,16 +126,16 @@ void findLargestBranch(Node* pRoot)
 {
 	vector<vector<int> > branches;
 	vector <int> branch;
-	printBranch(pRoot, branch, branches);
+	storeBranch(pRoot, branch, branches);
 	int max_sum = LargestBranchSum(pRoot);
 	
 	for (int k = 1; k < branches.size(); k++) {
-		current_sum = 0
+		int current_sum = 0
 			for (int j = 1; j < branches[k].size(); j++) {
 				current_sum += branches[k][j];
 
 				if (current_sum==max_sum) {
-					cout << "Branch with the largest sum is: " << vect[k][j] << " "<< "-> SUM = " << max_sum << endl;;
+					cout << "Branch with the largest sum is: " << branches [k][j] << " "<< "-> SUM = " << max_sum << endl;;
 					break;
 				}
 
