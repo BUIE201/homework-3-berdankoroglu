@@ -7,7 +7,7 @@ struct Node
 	int i;
 	Node* pLeft;
 	Node* pRight;
-	bool flag;
+	bool flag;		//use it for the path tracking
 	Node(int iIn) : i(iIn), pLeft(nullptr), pRight(nullptr) {}
 };
 
@@ -103,12 +103,12 @@ int LargestBranchSum(Node* pRoot)
 	int pRight = LargestBranchSum(pRoot->pRight);
 	if (pLeft > pRight)					//we take the child with largest value
 	{
-		pRoot->flag = 0;
+		pRoot->flag = 0;			//use the 0 indicator for left subtree decisions
 		return pLeft + pRoot->i;
 	}
 	else
 	{
-		pRoot->flag = 1;
+		pRoot->flag = 1;					//use the 1 indicator for right subtree decisions
 		return pRight + pRoot->i;
 	}
 
@@ -118,19 +118,18 @@ void print_max_road(Node* pRoot)
 	if (pRoot == nullptr)
 		return;
 	cout << pRoot->i << ' ';
-	if (pRoot->flag == 0)
+	if (pRoot->flag == 0)				//tracked the 0 and 1's for printing the largest branch
 		print_max_road(pRoot->pLeft);
-	else
+	else                 	
 		print_max_road(pRoot->pRight);
 }
 void findLargestBranch(Node* pRoot)
 {
-	vector<vector<int> > branches;
-	vector <int> branch;
+	
 	int max_sum = LargestBranchSum(pRoot);
 	cout << " Branch with the largest sum is :";
-	print_max_road(pRoot);
-	cout <<"->SUM ="<< max_sum << endl;
+	print_max_road(pRoot);			//printing the branch with largest sum
+	cout <<"->SUM ="<< max_sum << endl;		
 }
 int main()
 {
