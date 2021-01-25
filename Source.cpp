@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <vector>
 using namespace std;
 
 struct Node
@@ -7,7 +7,7 @@ struct Node
 	int i;
 	Node* pLeft;
 	Node* pRight;
-
+	bool flag;
 	Node(int iIn) : i(iIn), pLeft(nullptr), pRight(nullptr) {}
 };
 
@@ -93,22 +93,7 @@ void Insert(Node*& pRoot, Node* pNewNode)
 	}
 }
 
-void storeBranch(Node* pRoot, vector <int> branch, vector<vector<int>> &branches)
-{
-	if (pRoot == nullptr)
-		return false;
-	branch.push_back(pRoot->i);
-	
-	if (pRoot->pLeft == nullptr && pRoot->pRight == nullptr) // if it is a branch =>
-	{
-		branches.push_back(branch);
-	}
-	else	// otherwise check subtrees 
-	{
-		storeBranch(pRoot->pLeft, branch, branchLen);
-		storeBranch(pRoot->pRight, branch, brannchLen);
-	}
-}
+
 int LargestBranchSum(Node* pRoot)
 {
 	if (pRoot == nullptr) {
@@ -117,32 +102,37 @@ int LargestBranchSum(Node* pRoot)
 	int pLeft = LargestBranchSum(pRoot->pLeft);
 	int pRight = LargestBranchSum(pRoot->pRight);
 	if (pLeft > pRight)					//we take the child with largest value
+	{
+		pRoot->flag = 0;
 		return pLeft + pRoot->i;
+	}
 	else
+	{
+		pRoot->flag = 1;
 		return pRight + pRoot->i;
+	}
 
+}
+void print_max_road(Node* pRoot)
+{
+	if (pRoot == nullptr)
+		return;
+	cout << pRoot->i << ' ';
+	if (pRoot->flag == 0)
+		print_max_road(pRoot->pLeft);
+	else
+		print_max_road(pRoot->pRight);
 }
 void findLargestBranch(Node* pRoot)
 {
 	vector<vector<int> > branches;
 	vector <int> branch;
-	storeBranch(pRoot, branch, branches);
 	int max_sum = LargestBranchSum(pRoot);
-	
-	for (int k = 1; k < branches.size(); k++) {
-		int current_sum = 0
-			for (int j = 1; j < branches[k].size(); j++) {
-				current_sum += branches[k][j];
-
-				if (current_sum==max_sum) {
-					cout << "Branch with the largest sum is: " << branches [k][j] << " "<< "-> SUM = " << max_sum << endl;;
-					break;
-				}
-
-			}
-	}	
+	cout << " Branch with the largest sum is :";
+	print_max_road(pRoot);
+	cout <<"->SUM ="<< max_sum << endl;
 }
-void main()
+int main()
 {
 	int i;
 
@@ -159,5 +149,5 @@ void main()
 
 	PrintTree(pRoot, 1);
 	findLargestBranch(pRoot);
+	return 0;
 }
-
